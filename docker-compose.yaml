@@ -1,0 +1,13 @@
+#docker引擎对应所支持的docker-compose文本格式
+version: '3'
+
+services:
+  #服务的名称
+  springboot-docker:
+    build:
+      context: .
+      # 构建这个容器时所需要使用的dockerfile文件
+      dockerfile: spring-boot-dockerfile
+    ports:
+      # docker容器和宿主机之间的端口映射
+      - "7089:7089"

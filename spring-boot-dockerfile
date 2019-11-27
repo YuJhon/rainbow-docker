@@ -1,0 +1,16 @@
+#需要依赖的其他镜像
+FROM openjdk:8-jdk
+# Spring Boot应用程序为Tomcat创建的默认工作目录。作用是在你的主机”/var/lib/docker”目录下创建一个临时的文件，并且链接到容器中#的”/tmp”目录。
+VOLUME /tmp
+
+#是指将原先的src文件 添加到我们需要打包的镜像里面
+ADD target/springboot-docker.jar app.jar
+
+#设置镜像的时区,避免出现8小时的误差
+ENV TZ=Asia/Shanghai
+
+#容器暴露的端口号 和SpringBoot的yml文件暴露的端口号要一致
+EXPOSE 7089
+
+#输入的启动参数内容 下边这段内容相当于运行了java -Xms256m -Xmx512m -jar app.jar
+ENTRYPOINT ["java","-Xms256m","-Xmx512m","-jar","app.jar"]
