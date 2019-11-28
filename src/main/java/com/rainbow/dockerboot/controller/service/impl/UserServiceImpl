@@ -1,0 +1,52 @@
+package com.rainbow.dockerboot.service.impl;
+
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.rainbow.dockerboot.dao.UserDao;
+import com.rainbow.dockerboot.entity.User;
+import com.rainbow.dockerboot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * <p>功能描述</br></p>
+ *
+ * @author rain
+ * @version v1.0
+ * @projectName docker-boot
+ * @date 2019/11/25 19:10
+ */
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+
+    @Override
+    public List<User> createUser() {
+        userDao.insert();
+        return queryUsers();
+    }
+
+    @Override
+    public List<User> queryUsers() {
+        List<User> userList = null;
+        String userListStr = stringRedisTemplate.opsForValue().get("UserList");
+        if (StringUtils.isEmpty(userListStr)) {
+            userList = userDao.queryUserList();
+            stringRedisTemplate.opsForValue().set("UserList", JSON.toJSONString(userList),60, TimeUnit.SECONDS);
+        } else {
+            return JSON.parseObject(userListStr,List.class);
+        }
+        return userDao.queryUserList();
+    }
+}
