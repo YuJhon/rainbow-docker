@@ -1,7 +1,7 @@
 #docker引擎对应所支持的docker-compose文本格式
 version: '3'
-services:
 
+services:
   #服务的名称
   springboot-docker:
     container_name: docker-springboot
@@ -10,26 +10,21 @@ services:
       dockerfile: spring-boot-dockerfile
     ports:
       - "7089:7089"
-
     depends_on:
-      - mongodb
-
-
-  mongodb:
+      - redis
+  redis:
     #容器的名称
-    container_name: docker-mongodb
-    image: daocloud.io/library/mongo:latest
+    container_name: docker-redis
+    image: redis:4.0
     ports:
-      - "27017:27017"
-
+      - "6379:6379"
   mysql:
-    #镜像的版本
     image: mysql:5.7
     container_name: docker-mysql
     ports:
       - 3309:3306
     environment:
-       MYSQL_DATABASE: test
+       MYSQL_DATABASE: rainbow
        MYSQL_ROOT_PASSWORD: root
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_HOST: '%'
