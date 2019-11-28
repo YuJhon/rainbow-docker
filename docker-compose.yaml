@@ -7,7 +7,7 @@ services:
     container_name: docker-springboot
     build:
       context: .
-      dockerfile: springboot-dockerfile
+      dockerfile: spring-boot-dockerfile
     ports:
       - "7089:7089"
 
