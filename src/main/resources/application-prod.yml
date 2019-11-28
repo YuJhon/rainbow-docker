@@ -1,14 +1,19 @@
 server:
   port: 7089
 
+# 数据库和缓存配置
 spring:
-    data:
-      mongodb:
-        uri: mongodb://mongodb:27017
-        database: test
-
-    datasource:
-             driver-class-name: com.mysql.jdbc.Driver
-             url: jdbc:mysql://mysql:3306/test?useUnicode=true&amp;characterEncoding=UTF-8
-             username: root
-             password: root
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3000
+    pool:
+      max-idle: 100
+      min-idle: 20
+      max-active: 100
+      max-wait: -1
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3309/rainbow?useUnicode=true&amp;characterEncoding=UTF-8
+    username: root
+    password: root
