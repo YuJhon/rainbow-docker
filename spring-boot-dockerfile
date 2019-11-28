@@ -13,4 +13,4 @@ ENV TZ=Asia/Shanghai
 EXPOSE 7089
 
 #输入的启动参数内容 下边这段内容相当于运行了java -Xms256m -Xmx512m -jar app.jar
-ENTRYPOINT ["java","-Xms256m","-Xmx512m","-jar","app.jar"]
+ENTRYPOINT ["java","-Xms256m","-Xmx512m","-Dspring.profiles.active=prod","-jar","app.jar"]
