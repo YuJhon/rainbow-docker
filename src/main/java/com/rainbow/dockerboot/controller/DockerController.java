@@ -1,18 +1,17 @@
 package com.rainbow.dockerboot.controller;
 
-import com.rainbow.dockerboot.dao.CarDao;
-import com.rainbow.dockerboot.dao.UserDao;
-import com.rainbow.dockerboot.entity.Car;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.rainbow.dockerboot.dto.Response;
+import com.rainbow.dockerboot.entity.User;
+import com.rainbow.dockerboot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Random;
+import java.util.List;
 
 /**
- * <p>功能描述</br></p>
+ * <p>功能描述</br>基本控制器</p>
  *
  * @author rain
  * @version v1.0
@@ -23,30 +22,24 @@ import java.util.Random;
 @RequestMapping("/docker")
 public class DockerController {
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/info")
     public Response info() {
         return Response.build("Hello Springboot Docker!");
     }
-    
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private CarDao carDao;
 
-    @GetMapping(value = "/insert-mongodb")
-    public String insertMongoDB() {
-        Car car = new Car();
-        car.setId(new Random().nextInt(15000000));
-        String number = String.valueOf(System.currentTimeMillis());
-        car.setNumber(number);
-        carDao.save(car);
-        return "this is insert-mongodb";
+
+    @GetMapping("/createUser")
+    public Response createUser() {
+        List<User> userList = userService.createUser();
+        return Response.build(userList);
     }
 
-    @GetMapping(value = "/insert-mysql")
-    public String insertMySQL() {
-        userDao.insert();
-        return "this is insert-mysql";
+    @GetMapping("/queryUserList")
+    public Response queryUserList(){
+        List<User> userList = userService.queryUsers();
+        return Response.build(userList);
     }
-    
 }
